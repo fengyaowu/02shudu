@@ -1,4 +1,39 @@
+
+
 # shudu
+### 设计实现
+
+![]()
+* MapCluster类：生成8副填充图，提供渲染函数，用于把关系映射成一副完整的数独
+* SudokuNext函数：通过next_permutation枚举全排列，并随机轮转MapCluster的图，返回渲染后的数独
+* main函数：从命令行读取-c参数后，循环调用SudokuNext并输出到文件中
+![](https://images2018.cnblogs.com/blog/1347932/201803/1347932-20180318171651947-461661944.png)
+
+
+### 代码说明
+MapConditionGenerate用于生成4副基础图
+```
+void MapCluster::MapConditionGenerate(int map[9][9], int row, int col)
+{
+        // baseMap是中间的九宫格
+    int baseMap[][3] = { { 1,2,3 },{ 4,5,6 },{ 7,8,9 } };
+        //tmpX是在横向上的转换规则，tmpY则是纵向上的
+    int tmX[3] = { row,0,-row }, tmY[3] = { col,0,-col };
+        //生成9*9的图
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+                        //这一步是最关键也最复杂的一步，根据转换规则把结果写入9*9的数独中
+            map[i][j] = baseMap[(3 + i + tmX[j / 3]) % 3][(3 + j + tmY[i / 3]) % 3];
+        }
+    }
+}
+```
+### 测试运行
+![](https://images2018.cnblogs.com/blog/1347932/201803/1347932-20180318171738578-1463165666.png)
+
+
+### psp
+![](https://images2018.cnblogs.com/blog/1347932/201803/1347932-20180318171826207-1355132855.png)
 到文件夹下运行命令
 ```
 >Suduku-G.exe   -c 3
